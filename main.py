@@ -11,8 +11,11 @@ customtkinter.set_appearance_mode("System")
 customtkinter.set_default_color_theme("dark-blue")
 root = customtkinter.CTk()
 root.geometry("500x300")
+root.title("Totem Tools")
+root.after(201, lambda :root.iconbitmap("totem.ico"))
 name_en = StringVar()
 name_es = StringVar()
+edition = "Java Edition"
 
 #file = customtkinter.filedialog.askopenfilename()
 
@@ -212,43 +215,54 @@ def getboots(skin):
                 color = colortransformed(p[0], p[1], p[2], p[3], f[0], f[1], f[2])
                 res.putpixel((x+8, y+15), color)
 
-def maketotem(skin, style):
-    status = "Heading over"
-    gethead(skin)
-    status = "Placing torso"
-    getbody(skin)
-    status = "Arming left"
-    getarms(skin, 'L', style)
-    status = "Arming right"
-    getarms(skin, 'R', style)
-    status = "Putting pants on"
-    getlegs(skin)
-    status = "Booting up"
-    getboots(skin)
-    status = "Texting"
-    itemtext()
-    savepack()
-
-def savepack():
-    #man = open("Pack/manifest.json", "r")
-
-    res.save("Pack/pack_icon.png")
-    res.save("Pack/textures/items/totem.png")
-    shutil.make_archive("totempack", "zip", "Pack")
-    os.rename("totempack.zip", "Totem_Pack_"+str(random.randint(0, 9999))+".mcpack")
-
-
+def maketotem(skin, style, ed):
+    if ed == "Bedrock Edition":
+        status = "Heading over"
+        gethead(skin)
+        status = "Placing torso"
+        getbody(skin)
+        status = "Arming left"
+        getarms(skin, 'L', style)
+        status = "Arming right"
+        getarms(skin, 'R', style)
+        status = "Putting pants on"
+        getlegs(skin)
+        status = "Booting up"
+        getboots(skin)
+        status = "Texting"
+        en = open("Pack/texts/en_US.lang", "w", encoding="utf-8")
+        es = open("Pack/texts/es_ES.lang", "w", encoding="utf-8")
+        en.write("item.totem.name="+name_en.get())
+        es.write("item.totem.name="+name_es.get())
+        res.save("Pack/pack_icon.png")
+        res.save("Pack/textures/items/totem.png")
+        shutil.make_archive("totempack", "zip", "Pack")
+        os.rename("totempack.zip", "Totem_Pack_"+str(random.randint(0, 9999))+".mcpack")
+    if ed == "Java Edition":
+        status = "Heading over"
+        gethead(skin)
+        status = "Placing torso"
+        getbody(skin)
+        status = "Arming left"
+        getarms(skin, 'L', style)
+        status = "Arming right"
+        getarms(skin, 'R', style)
+        status = "Putting pants on"
+        getlegs(skin)
+        status = "Booting up"
+        getboots(skin)
+        res.save("Pack_2/pack.png")
+        res.save("Pack_2/assets/minecraft/textures/item/totem_of_undying.png")
+        shutil.make_archive("java_totempack", "zip", "Pack_2")
+        os.rename("java_totempack.zip", "Java_Edition_Totem_Pack_"+str(random.randint(0, 9999))+".zip")
 
 def chooseskin():
     path = customtkinter.filedialog.askopenfilename()
     sk = Image.open(path).convert("RGBA")
-    maketotem(sk, 'S')
+    maketotem(sk, 'S', edition)
 
-def itemtext():
-    en = open("Pack/texts/en_US.lang", "w", encoding="utf-8")
-    es = open("Pack/texts/es_ES.lang", "w", encoding="utf-8")
-    en.write("item.totem.name="+name_en.get())
-    es.write("item.totem.name="+name_es.get())
+def edition_chosen(choice):
+    edition = choice
 
 frame = customtkinter.CTkFrame(master=root)
 frame.pack(padx=20, pady=20, fill="both", expand=True)
@@ -256,9 +270,12 @@ frame.pack(padx=20, pady=20, fill="both", expand=True)
 label = customtkinter.CTkLabel(master=frame, text="Skin to Totem")
 label.pack(padx=12, pady=12)
 
-text_en = customtkinter.CTkEntry(master=frame, placeholder_text="English item name", textvariable=name_en)
+edition_select = customtkinter.CTkComboBox(master=frame, values=["Java Edition", "Bedrock Edition"], command=edition_chosen)
+edition_select.pack()
+
+text_en = customtkinter.CTkEntry(master=frame, placeholder_text="English item name (Bedrock-exclusive)", textvariable=name_en)
 text_en.pack()
-text_es = customtkinter.CTkEntry(master=frame, placeholder_text="English item name", textvariable=name_es)
+text_es = customtkinter.CTkEntry(master=frame, placeholder_text="Spanish item name (Bedrock-exclusive)", textvariable=name_es)
 text_es.pack()
 
 skinButton = customtkinter.CTkButton(master=frame, text="Choose skin file", command=chooseskin)

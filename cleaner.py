@@ -27,9 +27,9 @@ totem.save("Pack/textures/items/totem.png")
 
 print("Detecting resource pack files")
 for i in range(len(dirList)):
-    if '.mcpack' in dirList[i]:
+    if 'Totem_Pack_' in dirList[i]:
         packList.append(dirList[i])
 
-print("Deleting resource pack installer files")
+print("Deleting resource pack files")
 for i in range(len(packList)):
     os.remove(packList[i])
