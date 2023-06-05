@@ -5,17 +5,16 @@ import customtkinter
 import shutil
 import os
 import random
-import json
 
 customtkinter.set_appearance_mode("System")
 customtkinter.set_default_color_theme("dark-blue")
 root = customtkinter.CTk()
-root.geometry("500x300")
+root.geometry("300x400")
 root.title("Totem Tools")
-root.after(201, lambda :root.iconbitmap("totem.ico"))
+root.after(0, lambda :root.iconbitmap("totem.ico"))
 name_en = StringVar()
 name_es = StringVar()
-edition = "Java Edition"
+edition = StringVar()
 
 #file = customtkinter.filedialog.askopenfilename()
 
@@ -259,24 +258,29 @@ def maketotem(skin, style, ed):
 def chooseskin():
     path = customtkinter.filedialog.askopenfilename()
     sk = Image.open(path).convert("RGBA")
-    maketotem(sk, 'S', edition)
-
-def edition_chosen(choice):
-    edition = choice
+    print(edition)
+    maketotem(sk, 'S', edition.get())
 
 frame = customtkinter.CTkFrame(master=root)
 frame.pack(padx=20, pady=20, fill="both", expand=True)
 
-label = customtkinter.CTkLabel(master=frame, text="Skin to Totem")
+label = customtkinter.CTkLabel(master=frame, text="Skin to Totem", font=("Roboto", 30))
 label.pack(padx=12, pady=12)
 
-edition_select = customtkinter.CTkComboBox(master=frame, values=["Java Edition", "Bedrock Edition"], command=edition_chosen)
-edition_select.pack()
+ed_sel_label = customtkinter.CTkLabel(master=frame, text="Select edition")
+ed_sel_label.pack(pady=0)
+edition_select = customtkinter.CTkComboBox(master=frame, values=["Java Edition", "Bedrock Edition"], variable=edition)
+edition_select.pack(pady=10)
 
-text_en = customtkinter.CTkEntry(master=frame, placeholder_text="English item name (Bedrock-exclusive)", textvariable=name_en)
-text_en.pack()
-text_es = customtkinter.CTkEntry(master=frame, placeholder_text="Spanish item name (Bedrock-exclusive)", textvariable=name_es)
-text_es.pack()
+en_label = customtkinter.CTkLabel(master=frame, text="English item name")
+en_label.pack(pady=0)
+text_en = customtkinter.CTkEntry(master=frame, placeholder_text="English name", textvariable=name_en)
+text_en.pack(pady=10)
+
+es_label = customtkinter.CTkLabel(master=frame, text="Spanish item name")
+es_label.pack(pady=0)
+text_es = customtkinter.CTkEntry(master=frame, placeholder_text="Spanish name", textvariable=name_es)
+text_es.pack(pady=10)
 
 skinButton = customtkinter.CTkButton(master=frame, text="Choose skin file", command=chooseskin)
 skinButton.pack(padx=12,pady=12)
