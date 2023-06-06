@@ -10,6 +10,7 @@ totem2 = Image.open("Pack_2/assets/minecraft/textures/item/totem_of_undying.png"
 en = open("Pack/texts/en_US.lang", "w")
 es = open("Pack/texts/es_ES.lang", "w")
 dirList = os.listdir()
+cacheList = os.listdir("__pycache__")
 packList = []
 
 print("Deleting language file contents")
@@ -29,7 +30,7 @@ totem.save("Pack/textures/items/totem.png")
 icon2.save("Pack_2/pack.png")
 totem2.save("Pack_2/assets/minecraft/textures/item/totem_of_undying.png")
 
-print("Detecting resource pack files")
+print("Detecting files")
 for i in range(len(dirList)):
     if 'Totem_Pack_' in dirList[i]:
         packList.append(dirList[i])
@@ -37,3 +38,8 @@ for i in range(len(dirList)):
 print("Deleting resource pack files")
 for i in range(len(packList)):
     os.remove(packList[i])
+
+print("Deleting cache")
+for i in range(len(cacheList)):
+    os.remove("__pycache__/" + cacheList[i])
+os.rmdir("__pycache__")
