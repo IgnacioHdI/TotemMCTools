@@ -1,10 +1,7 @@
 #This file will be run before making any changes to the GitHub repository
 
 from PIL import Image
-from PIL import ImageEnhance
-import shutil
 import os
-import random
 
 icon = Image.open("Pack/pack_icon.png")
 totem = Image.open("Pack/textures/items/totem.png")
