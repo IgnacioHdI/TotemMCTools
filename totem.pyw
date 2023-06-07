@@ -5,6 +5,7 @@ import shutil
 import os
 import random
 
+
 def start():
     customtkinter.set_appearance_mode("System")
     customtkinter.set_default_color_theme("dark-blue")
@@ -215,8 +216,12 @@ def start():
             getboots(skin)
             en = open("Pack/texts/en_US.lang", "w", encoding="utf-8")
             es = open("Pack/texts/es_ES.lang", "w", encoding="utf-8")
+            engb = open("Pack/texts/en_GB.lang", "w", encoding="utf-8")
+            esmx = open("Pack/texts/es_MX.lang", "w", encoding="utf-8")
             en.write("item.totem.name="+name_en.get())
             es.write("item.totem.name="+name_es.get())
+            engb.write("item.totem.name="+name_en.get())
+            esmx.write("item.totem.name="+name_es.get())
             res.save("Pack/pack_icon.png")
             res.save("Pack/textures/items/totem.png")
             shutil.make_archive("totempack", "zip", "Pack")
@@ -236,7 +241,6 @@ def start():
     def chooseskin():
         path = customtkinter.filedialog.askopenfilename()
         sk = Image.open(path).convert("RGBA")
-        print(edition)
         maketotem(sk, 'S', edition.get())
 
 
@@ -259,3 +263,4 @@ def start():
     skinButton = customtkinter.CTkButton(master=frame, text="Choose skin file", command=chooseskin)
     skinButton.pack(padx=12,pady=12)
     root.mainloop()
+start()
